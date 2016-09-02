@@ -5,8 +5,8 @@
 package smparser
 
 import (
-	"github.com/fiorix/go-diameter/diam"
-	"github.com/fiorix/go-diameter/diam/datatype"
+	"github.com/ibrohimislam/go-diameter/diam"
+	"github.com/ibrohimislam/go-diameter/diam/datatype"
 )
 
 // DWR is a Device-Watchdog-Request message.

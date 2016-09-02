@@ -1,11 +1,11 @@
 # Diameter Base Protocol
 
-Package [go-diameter](http://godoc.org/github.com/fiorix/go-diameter) is an
+Package [go-diameter](http://godoc.org/github.com/ibrohimislam/go-diameter) is an
 implementation of the
 Diameter Base Protocol [RFC 6733](http://tools.ietf.org/html/rfc6733)
 and a stack for the [Go programming language](http://golang.org).
 
-[![GoDoc](https://godoc.org/github.com/fiorix/go-diameter?status.svg)](https://godoc.org/github.com/fiorix/go-diameter)
+[![GoDoc](https://godoc.org/github.com/ibrohimislam/go-diameter?status.svg)](https://godoc.org/github.com/ibrohimislam/go-diameter)
 
 ### Status
 
@@ -13,9 +13,9 @@ The current implementation is solid and works fine for general purpose
 clients and servers. It can send and receive messages efficiently as
 well as build and parse AVPs based on dictionaries.
 
-See the API documentation at http://godoc.org/github.com/fiorix/go-diameter
+See the API documentation at http://godoc.org/github.com/ibrohimislam/go-diameter
 
-[![Build Status](https://secure.travis-ci.org/fiorix/go-diameter.png)](http://travis-ci.org/fiorix/go-diameter)
+[![Build Status](https://secure.travis-ci.org/ibrohimislam/go-diameter.png)](http://travis-ci.org/ibrohimislam/go-diameter)
 
 ## Features
 
@@ -39,11 +39,11 @@ Make sure Go is installed, and both GOPATH and GOROOT are set.
 
 Install:
 
-	go get github.com/fiorix/go-diameter/diam
+	go get github.com/ibrohimislam/go-diameter/diam
 
 Check out the examples:
 
-	cd $GOPATH/src/github.com/fiorix/go-diameter/examples
+	cd $GOPATH/src/github.com/ibrohimislam/go-diameter/examples
 
 See the test cases for more specific examples.
 

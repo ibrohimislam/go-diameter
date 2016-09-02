@@ -10,7 +10,7 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/fiorix/go-diameter/diam/datatype"
+	"github.com/ibrohimislam/go-diameter/diam/datatype"
 )
 
 // Apps return a list of all applications loaded in the Parser object.

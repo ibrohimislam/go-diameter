@@ -10,9 +10,9 @@ import (
 	"reflect"
 	"strings"
 
-	"github.com/fiorix/go-diameter/diam/avp"
-	"github.com/fiorix/go-diameter/diam/datatype"
-	"github.com/fiorix/go-diameter/diam/dict"
+	"github.com/ibrohimislam/go-diameter/diam/avp"
+	"github.com/ibrohimislam/go-diameter/diam/datatype"
+	"github.com/ibrohimislam/go-diameter/diam/dict"
 )
 
 // parseAvpTag return the avp_name and omitempty option

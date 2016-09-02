@@ -7,9 +7,9 @@ package sm
 import (
 	"fmt"
 
-	"github.com/fiorix/go-diameter/diam"
-	"github.com/fiorix/go-diameter/diam/datatype"
-	"github.com/fiorix/go-diameter/diam/sm/smpeer"
+	"github.com/ibrohimislam/go-diameter/diam"
+	"github.com/ibrohimislam/go-diameter/diam/datatype"
+	"github.com/ibrohimislam/go-diameter/diam/sm/smpeer"
 )
 
 // Settings used to configure the state machine with AVPs to be added
