@@ -61,10 +61,16 @@ func readerBufferSlice(buf *bytes.Buffer, l int) []byte {
 // ReadMessage reads a binary stream from the reader and uses the given
 // dictionary to parse it.
 func ReadMessage(reader io.Reader, dictionary *dict.Parser) (*Message, error) {
+	fmt.Printf("message received.\n")
+
 	buf := newReaderBuffer()
 	defer putReaderBuffer(buf)
+
+	fmt.Printf("parsing header...\n")
 	m := &Message{dictionary: dictionary}
 	cmd, err := m.readHeader(reader, buf)
+
+	fmt.Printf("decoding Message[%d]...\n", cmd.Code)
 	if err != nil {
 		return nil, err
 	}
@@ -76,13 +82,16 @@ func ReadMessage(reader io.Reader, dictionary *dict.Parser) (*Message, error) {
 
 func (m *Message) readHeader(r io.Reader, buf *bytes.Buffer) (cmd *dict.Command, err error) {
 	b := buf.Bytes()[:HeaderLength]
+	fmt.Printf("read full...\n")
 	if _, err = io.ReadFull(r, b); err != nil {
 		return nil, io.ErrUnexpectedEOF
 	}
+	fmt.Printf("header: %#v\n", b)
 	m.Header, err = DecodeHeader(b)
 	if err != nil {
 		return nil, err
 	}
+	fmt.Printf("find command on dictionary...\n")
 	cmd, err = m.Dictionary().FindCommand(
 		m.Header.ApplicationID,
 		m.Header.CommandCode,
@@ -90,12 +99,14 @@ func (m *Message) readHeader(r io.Reader, buf *bytes.Buffer) (cmd *dict.Command,
 	if err != nil {
 		return nil, err
 	}
+	fmt.Printf("command found on dictionary...\n")
 	return cmd, nil
 }
 
 func (m *Message) readBody(r io.Reader, buf *bytes.Buffer, cmd *dict.Command) error {
 	b := readerBufferSlice(buf, int(m.Header.MessageLength-HeaderLength))
 	_, err := io.ReadFull(r, b)
+
 	if err != nil {
 		return err
 	}

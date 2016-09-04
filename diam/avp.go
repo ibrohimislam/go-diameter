@@ -56,13 +56,16 @@ func (a *AVP) DecodeFromBytes(data []byte, application uint32, dictionary *dict.
 		return fmt.Errorf("Not enough data to decode AVP header: %d bytes", dl)
 	}
 	a.Code = binary.BigEndian.Uint32(data[0:4])
+
 	a.Flags = data[4]
 	a.Length = int(uint24to32(data[5:8]))
 	if dl < int(a.Length) {
-		return fmt.Errorf("Not enough data to decode AVP: %d != %d",
+		fmt.Printf("%#v\n", data)
+		return fmt.Errorf("Not enough data to decode AVP [1]: %d != %d",
 			dl, a.Length)
 	}
 	data = data[:a.Length] // this cuts padded bytes off
+
 	var hdrLength int
 	var payload []byte
 	// Read VendorId when required.
@@ -74,6 +77,11 @@ func (a *AVP) DecodeFromBytes(data []byte, application uint32, dictionary *dict.
 		payload = data[8:]
 		hdrLength = 8
 	}
+
+	// fmt.Printf("decoding AVP[%d v:%d]...\n", a.Code, a.VendorID)
+
+	// fmt.Printf("header: %#v\n", data[:hdrLength])
+
 	// Find this code in the dictionary.
 	dictAVP, err := dictionary.FindAVPWithVendor(application, a.Code, a.VendorID)
 	if err != nil {
@@ -82,20 +90,25 @@ func (a *AVP) DecodeFromBytes(data []byte, application uint32, dictionary *dict.
 	bodyLen := a.Length - hdrLength
 	if n := len(payload); n < bodyLen {
 		return fmt.Errorf(
-			"Not enough data to decode AVP: %d != %d",
+			"Not enough data to decode AVP [2]: %d != %d",
 			hdrLength, n,
 		)
 	}
+
+	//fmt.Printf("payload: %#v\n", payload)
+
 	a.Data, err = datatype.Decode(dictAVP.Data.Type, payload)
 	if err != nil {
 		return err
 	}
 	// Handle grouped AVPs.
 	if a.Data.Type() == datatype.GroupedType {
+		//fmt.Printf("decoding grouped AVP [%d] ------- \n", a.Code)
 		a.Data, err = DecodeGrouped(
 			a.Data.(datatype.Grouped),
 			application, dictionary,
 		)
+		//fmt.Printf("decoding grouped AVP [%d][end]------- \n", a.Code)
 		if err != nil {
 			return err
 		}
@@ -141,7 +154,11 @@ func (a *AVP) SerializeTo(b []byte) error {
 
 // Len returns the length of this AVP in bytes with padding.
 func (a *AVP) Len() int {
-	return a.headerLen() + a.Data.Len() + a.Data.Padding()
+	//fmt.Printf("a[%d].Len(): %d %d\n", a.Code, a.Length, a.headerLen()+a.Data.Len()+a.Data.Padding())
+	//return a.headerLen() + a.Data.Len() + a.Data.Padding()
+	//fmt.Printf("a.Len(): %d\n", a.Length)
+	//fmt.Printf("a.Len() + padding?: %d\n", (a.Length+3)/4*4)
+	return (a.Length + 3) / 4 * 4
 }
 
 func (a *AVP) headerLen() int {

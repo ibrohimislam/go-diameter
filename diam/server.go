@@ -142,7 +142,7 @@ func (c *conn) readMessage() (*Message, error) {
 func (c *conn) serve() {
 	defer func() {
 		if err := recover(); err != nil {
-			buf := make([]byte, 4096)
+			buf := make([]byte, 65536)
 			buf = buf[:runtime.Stack(buf, false)]
 			log.Printf("diam: panic serving %v: %v\n%s",
 				c.rwc.RemoteAddr().String(), err, buf)
