@@ -434,6 +434,12 @@ func unmarshal(m *Message, f reflect.Value, avps []*AVP) {
 		// Handle grouped AVPs.
 		if group, ok := avps[0].Data.(*GroupedAVP); ok {
 			scanStruct(m, f, group.AVP)
+			break
+		}
+
+		dv := reflect.ValueOf(avps[0].Data)
+		if dv.Type().ConvertibleTo(fieldType) {
+			f.Set(dv.Convert(fieldType))
 		}
 
 	default:
