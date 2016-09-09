@@ -6,7 +6,7 @@ package diam
 
 import (
 	"errors"
-	// "log"
+	"log"
 	"reflect"
 	"strings"
 
@@ -394,6 +394,8 @@ func scanStruct(m *Message, field reflect.Value, avps []*AVP) error {
 func unmarshal(m *Message, f reflect.Value, avps []*AVP) {
 	fieldType := f.Type()
 
+	log.Println(fieldType)
+
 	switch f.Kind() {
 	case reflect.Slice:
 		// Copy byte arrays.
@@ -434,7 +436,6 @@ func unmarshal(m *Message, f reflect.Value, avps []*AVP) {
 		// Handle grouped AVPs.
 		if group, ok := avps[0].Data.(*GroupedAVP); ok {
 			scanStruct(m, f, group.AVP)
-			break
 		}
 
 		dv := reflect.ValueOf(avps[0].Data)
